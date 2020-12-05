@@ -98,7 +98,7 @@ const electionGraph = (data) => {
 
   demRects.enter()
     .append('rect')
-    .attr('x', (d) => xScale(d.Year) - xScale.bandwidth() / 2)
+    .attr('x', (d) => xScale(d.Year) - ((3 * xScale.bandwidth()) / 2))
     .attr('y', (d) => popScale(d.PopularVotes))
     .attr('height', (d) => height - padding - popScale(d.PopularVotes))
     .attr('width', xScale.bandwidth())
@@ -115,7 +115,7 @@ const electionGraph = (data) => {
 
   demRects.enter()
     .append('rect')
-    .attr('x', (d) => xScale(d.Year) - ((3 * xScale.bandwidth()) / 2))
+    .attr('x', (d) => xScale(d.Year) + xScale.bandwidth() / 2)
     .attr('y', (d) => eleScale(d.ElectoralVotes))
     .attr('height', (d) => height - padding - eleScale(d.ElectoralVotes))
     .attr('width', xScale.bandwidth())
@@ -137,7 +137,7 @@ const electionGraph = (data) => {
 
   repRects.enter()
     .append('rect')
-    .attr('x', (d) => xScale(d.Year) + xScale.bandwidth() / 2)
+    .attr('x', (d) => xScale(d.Year) - xScale.bandwidth() / 2)
     .attr('y', (d) => popScale(d.PopularVotes))
     .attr('height', (d) => height - padding - popScale(d.PopularVotes))
     .attr('width', xScale.bandwidth())
@@ -357,7 +357,7 @@ const electionGraph = (data) => {
           .data(dataset1.values.democrats)
           .transition()
           .duration(1000)
-          .attr('x', (d) => xScale(d.Year) - xScale.bandwidth() / 2)
+          .attr('x', (d) => xScale(d.Year) - (3 * xScale.bandwidth()) / 2)
           .attr('y', (d) => popScale(d.PopularVotes))
           .attr('height', (d) => height - padding - popScale(d.PopularVotes))
           .attr('width', xScale.bandwidth());
@@ -365,7 +365,7 @@ const electionGraph = (data) => {
           .data(dataset1.values.democrats)
           .transition()
           .duration(1000)
-          .attr('x', (d) => xScale(d.Year) - (3 * xScale.bandwidth()) / 2)
+          .attr('x', (d) => xScale(d.Year) + xScale.bandwidth() / 2)
           .attr('y', (d) => eleScale(d.ElectoralVotes))
           .attr('height', (d) => height - padding - eleScale(d.ElectoralVotes))
           .attr('width', xScale.bandwidth());
@@ -373,7 +373,7 @@ const electionGraph = (data) => {
           .data(dataset1.values.republicans)
           .transition()
           .duration(1000)
-          .attr('x', (d) => xScale(d.Year) + xScale.bandwidth() / 2)
+          .attr('x', (d) => xScale(d.Year) - xScale.bandwidth() / 2)
           .attr('y', (d) => popScale(d.PopularVotes))
           .attr('height', (d) => height - padding - popScale(d.PopularVotes))
           .attr('width', xScale.bandwidth());
