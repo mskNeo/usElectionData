@@ -21,6 +21,53 @@
         <p id="slideYear"></p>
       </div>
     </div>
+
+    <div id="info">
+      <h2>Instructions</h2>
+      <ul>
+        <li>
+          The slider is used to dictate which Presidential Election is shown in the map and which one is highlighted in the bar graph and scatter plot. 
+          Any election not selected by the slider is dimmed out so only the relevant info is in focus. 
+        </li>
+        <li>
+          The bar graph is clickable, and when it is clicked, it transitions to percentage of votes rather than raw numbers. 
+          If it is clicked again, it will revert back to raw numbers, and cycles back and forth. Essentially, it is a loop.
+        </li>
+        <li>
+          Each piece of data (bars, circles, states) all have tooltips that reveal the specific information/data for that element. 
+          Simply hover over any element and the tooltip will appear.
+        </li>
+      </ul>
+
+      <h2>Questions</h2>
+      <ol>
+        <li>
+          I am trying to analyze the effectiveness of the Electoral College System we have in place for Presidential Elections. 
+          Specifically, I am looking to see if the Electoral College System is truly indicative of the citizens' votes/opinions.
+        </li>
+        <li>
+          To show the data and answer my question, I collected Presidential Election data from MIT Election Labs, 
+          but that only had Popular Vote data from every state since 1976. 
+          I went to InfoPlease to find the Electoral Vote data for Presidential Elections so I could graph the Electoral Vote data.
+          I also filtered out any independent presidential candidates since no independent presidential candidate won Electoral votes and
+          there has only been Democratic and Republican nominees that have won elections.
+        </li>
+        <li>
+          I displayed my data in three different kinds of views: a clustered and stacked bar graph, a geographic map of the U.S., and a scatter plot.
+          <br>
+          I used the bar graph to visualize the number of Popular and Electoral votes and the percentage of the total votes (popular and electoral) each candidate got.
+          This was to highlight the disparity between the percentages of Popular Votes and Electoral Votes each candidate received to show that there is a disconnect between these votes,
+          even though the Electoral Vote was designed to mirror the Popular Vote.
+          <br>
+          I used the geographic map to showcase how each state voted for every election. I also showed how much of a lead each candidate had in each state to show that each state didn't 
+          always clearly vote for one candidate every year. There are states that lean towards a certain political side every election, but not every state.
+          <br>
+          I used the scatter plot for a mathematical analysis approach to the question. In the scatter plot, I was looking for the correlation between Electoral Votes and Popular Votes.
+          If Electoral Votes are a good representation of the Popular Vote, then there should be a positive correlation between Electoral Votes and Popular Votes. 
+          However, it is shown that there is no correlation between Electoral Votes and Popular Votes, meaning that the Electoral College is not an accurate representation of the Popular Vote.
+        </li>
+      </ol>
+    </div>
   </div>
 
   <script src="js/barVotes.js"></script>
