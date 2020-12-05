@@ -1,0 +1,19 @@
+{
+  "name": "asst6",
+  "version": "1.0.0",
+  "description": "Yale CS446 Assignment 6 Presidential Election Graphs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mahdeen (Neo) Khan",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.14.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "dependencies": {
+    "netlify": "^4.9.0"
+  }
+}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neo: Assignment 6</title>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="graphs">
+    <section id="electoral">
+      <div id="bar-graph"></div>
+      <div id="analysis"></div>
+    </section>
+
+    <div id="map">
+      <div id="sliderContainer">
+        <input type="range" min="1976" max="2016" step="4" value="2016" class="yearRange">
+        <p id="slideYear"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="popVote.js"></script>
+  <script src="presMap.js"></script>
+  <script src="electoralScatter.js"></script>
+</body>
+</html>
