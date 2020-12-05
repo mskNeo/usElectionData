@@ -477,7 +477,7 @@ const electionGraph = (data) => {
     });
 };
 
-d3.csv('PresidentialElectoralVotes.csv')
+d3.csv('data/PresidentialElectoralVotes.csv')
   .then((data) => {
     data.forEach((ele) => {
       ele.Year = +ele.Year;

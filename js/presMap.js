@@ -29,7 +29,7 @@ const makeMap = (data) => {
     .attr('width', width)
     .attr('height', height);
 
-  d3.json('us-states.json')
+  d3.json('data/us-states.json')
     .then((json) => {
       const jsonData = { ...json };
       for (let i = 0; i < data.length; i += 1) {
@@ -265,7 +265,7 @@ const makeMap = (data) => {
     .text('> 10%');
 };
 
-d3.csv('1976-2016-president.csv')
+d3.csv('data/1976-2016-president.csv')
   .then((data) => {
     data.forEach((d) => {
       d.year = parseInt(d.year, 10);
