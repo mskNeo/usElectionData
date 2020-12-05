@@ -200,7 +200,7 @@ const electionGraph = (data) => {
   eleGraph.selectAll('.domain')
     .attr('style', 'opacity: 0');
 
-  // y axis title
+  // y axis titles
   eleGraph.append('text')
     .attr('transform', `translate(${padding / 3} ${height / 2})rotate(-90)`)
     .style('font-size', '24px')
@@ -289,6 +289,12 @@ const electionGraph = (data) => {
     .style('font-family', 'sans-serif')
     .attr('text-anchor', 'middle')
     .text('Presidential Election Results from 1976-2016');
+  titleGroup.append('text')
+    .style('font-size', '12px')
+    .style('font-family', 'sans-serif')
+    .attr('text-anchor', 'middle')
+    .attr('y', 20)
+    .text('* Click on graph for alternate view');
 
   // get value from slider and filter data
   slider.addEventListener('input', () => {
