@@ -175,11 +175,11 @@ const electionGraph = (data) => {
   const xAxis = d3.axisBottom(xScale)
     .tickSize(0);
   const popAxis = d3.axisLeft(popScale)
-    .ticks(5)
+    .tickValues([42000000, 47000000, 52000000, 57000000, 62000000, 67000000])
     .tickSize(-(width - padding * 1.7))
     .tickFormat((d) => `${d / 1000000}`);
   const eleAxis = d3.axisRight(eleScale)
-    .ticks(5)
+    .tickValues([0, 95, 185, 275, 365, 455, 545])
     .tickSize(-(width - padding * 1.7));
   eleGraph.append('g')
     .attr('class', 'x-axis')
@@ -196,7 +196,7 @@ const electionGraph = (data) => {
 
   // style the axes
   eleGraph.selectAll('line')
-    .attr('style', 'opacity: 0.2');
+    .attr('style', 'opacity: 0.05');
   eleGraph.selectAll('.domain')
     .attr('style', 'opacity: 0');
 
@@ -388,11 +388,11 @@ const electionGraph = (data) => {
 
         // update axes
         const newPopAxis = d3.axisLeft(popScale)
-          .ticks(5)
+          .tickValues([42000000, 47000000, 52000000, 57000000, 62000000, 67000000])
           .tickSize(-(width - padding * 1.7))
           .tickFormat((d) => `${d / 1000000}`);
         const newEleAxis = d3.axisRight(eleScale)
-          .ticks(5)
+          .tickValues([0, 95, 185, 275, 365, 455, 545])
           .tickSize(-(width - padding * 1.7));
         const newXAxis = d3.axisBottom(xScale)
           .tickSize(0);
@@ -405,7 +405,7 @@ const electionGraph = (data) => {
 
         // style the axes
         eleGraph.selectAll('line')
-          .attr('style', 'opacity: 0.2');
+          .attr('style', 'opacity: 0.05');
         eleGraph.selectAll('.domain')
           .attr('style', 'opacity: 0');
 
@@ -471,7 +471,7 @@ const electionGraph = (data) => {
 
         // style the axes
         eleGraph.selectAll('line')
-          .attr('style', 'opacity: 0.2');
+          .attr('style', 'opacity: 0.05');
         eleGraph.selectAll('.domain')
           .attr('style', 'opacity: 0');
 
