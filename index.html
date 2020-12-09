@@ -34,6 +34,12 @@
           If it is clicked again, it will revert back to raw numbers, and cycles back and forth. Essentially, it is a loop.
         </li>
         <li>
+          The choropleth graph is also clickable, and when it is clicked, it transitions to circles that represent the amount of popular votes
+          each candidate got in the states. I implemented this since some people, when seeing graphs of election votes, tend to believe that land
+          size accounts for votes, and that certain parties should be winning by a lot based on how much of their color is present on the map.
+          I wanted to avoid this misconception so I added the circles to allow for a better understanding of how many votes each candidate really received.
+        </li>
+        <li>
           Each piece of data (bars, circles, states) all have tooltips that reveal the specific information/data for that element. 
           Simply hover over any element and the tooltip will appear.
         </li>
@@ -60,7 +66,8 @@
           even though the Electoral Vote was designed to mirror the Popular Vote.
           <br>
           I used the geographic map to showcase how each state voted for every election. I also showed how much of a lead each candidate had in each state to show that each state didn't 
-          always clearly vote for one candidate every year. There are states that lean towards a certain political side every election, but not every state.
+          always clearly vote for one candidate every year. There are states that lean towards a certain political side every election, but not every state. This is also to remove the curtain
+          from the misconception that land area means votes.
           <br>
           I used the scatter plot for a mathematical analysis approach to the question. In the scatter plot, I was looking for the correlation between Electoral Votes and Popular Votes.
           If Electoral Votes are a good representation of the Popular Vote, then there should be a positive correlation between Electoral Votes and Popular Votes. 

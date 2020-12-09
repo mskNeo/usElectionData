@@ -9,6 +9,11 @@
 const makeMap = (data) => {
   const height = 800;
   const width = 800;
+  let counter = 0;
+  // get value from slider and filter data
+  const slider = document.querySelector('#sliderContainer input');
+  const sliderValue = document.querySelector('#sliderContainer p');
+  sliderValue.innerHTML = `Year: ${+slider.value}`;
 
   const demColor = d3.scaleQuantize()
     .domain([0.02, 0.05, 0.1, 0.2])
@@ -17,6 +22,10 @@ const makeMap = (data) => {
   const repColor = d3.scaleQuantize()
     .domain([0.02, 0.05, 0.1, 0.2])
     .range(['#E28979', '#D75D47', '#B83E28', '#862D1D']);
+
+  const circleScale = d3.scaleLinear()
+    .domain([d3.min(data.map((d) => d.candidatevotes)), d3.max(data.map((d) => d.candidatevotes))])
+    .range([5, 50]);
 
   const projection = d3.geoAlbersUsa()
     .translate([width / 2, height / 2]);
@@ -80,47 +89,6 @@ const makeMap = (data) => {
         }
       }
 
-      // get value from slider and filter data
-      const slider = document.querySelector('#sliderContainer input');
-      const sliderValue = document.querySelector('#sliderContainer p');
-      sliderValue.innerHTML = `Year: ${+slider.value}`;
-
-      slider.addEventListener('input', () => {
-        const electionYear = +slider.value;
-        sliderValue.innerHTML = `Year: ${electionYear}`;
-
-        mapGraph.selectAll('path')
-          .data(jsonData.features)
-          .transition()
-          .duration(300)
-          .style('fill', (d) => {
-            const { value } = d.properties;
-            const yearChosen = value.filter((result) => result.year === electionYear);
-            if (yearChosen[0].demVote < yearChosen[0].repVote) {
-              return repColor((yearChosen[0].repVote - yearChosen[0].demVote)
-                / (yearChosen[0].repVote + yearChosen[0].demVote));
-            }
-            return demColor((yearChosen[0].demVote - yearChosen[0].repVote)
-                / (yearChosen[0].repVote + yearChosen[0].demVote));
-          });
-
-        mapGraph.selectAll('.state-info')
-          .data(jsonData.features)
-          .text((d) => {
-            const { value } = d.properties;
-            const yearChosen = value.filter((result) => result.year === +slider.value);
-            if (yearChosen[0].demVote > yearChosen[0].repVote) {
-              return `State: ${yearChosen[0].state}\nWinner: ${yearChosen[0].demRep}\nVotes: ${yearChosen[0].demVote}\nLead: ${(((yearChosen[0].demVote - yearChosen[0].repVote)
-                / (yearChosen[0].repVote + yearChosen[0].demVote)) * 100).toFixed(2)}%`;
-            }
-            return `State: ${yearChosen[0].state}\nWinner: ${yearChosen[0].repRep}\nVotes: ${yearChosen[0].repVote}\nLead: ${(((yearChosen[0].repVote - yearChosen[0].demVote)
-              / (yearChosen[0].repVote + yearChosen[0].demVote)) * 100).toFixed(2)}%`;
-          });
-
-        mapGraph.selectAll('.mapTitle')
-          .text(`${electionYear} Presidential Election Map`);
-      });
-
       mapGraph.selectAll('path')
         .data(jsonData.features)
         .enter()
@@ -139,7 +107,7 @@ const makeMap = (data) => {
         .attr('stroke-width', 1)
         .attr('stroke', 'white')
         .append('title')
-        .attr('class', 'state-info')
+        .attr('class', 'states')
         .text((d) => {
           const { value } = d.properties;
           const yearChosen = value.filter((result) => result.year === +slider.value);
@@ -149,6 +117,160 @@ const makeMap = (data) => {
           }
           return `State: ${yearChosen[0].state}\nWinner: ${yearChosen[0].repRep}\nVotes: ${String(yearChosen[0].repVote).replace(/(.)(?=(\d{3})+$)/g, '$1,')}\nLead: ${(((yearChosen[0].repVote - yearChosen[0].demVote)
             / (yearChosen[0].repVote + yearChosen[0].demVote)) * 100).toFixed(2)}%`;
+        });
+
+      d3.csv('data/statecentroids.csv')
+        .then((centroidData) => {
+          mapGraph.selectAll('circle')
+            .data(jsonData.features)
+            .enter()
+            .append('circle')
+            .attr('cx', (d) => {
+              const state = centroidData.filter((ele) => ele.Name === d.properties.name);
+              return projection([state[0].Long, state[0].Lat])[0];
+            })
+            .attr('cy', (d) => {
+              const state = centroidData.filter((ele) => ele.Name === d.properties.name);
+              return projection([state[0].Long, state[0].Lat])[1];
+            })
+            .attr('r', 0)
+            .attr('class', 'vote-circles')
+            .style('fill', (d) => {
+              const { value } = d.properties;
+              const yearChosen = value.filter((result) => result.year === +slider.value);
+              if (yearChosen[0].demVote < yearChosen[0].repVote) {
+                return repColor((yearChosen[0].repVote - yearChosen[0].demVote)
+                  / (yearChosen[0].repVote + yearChosen[0].demVote));
+              }
+              return demColor((yearChosen[0].demVote - yearChosen[0].repVote)
+                  / (yearChosen[0].repVote + yearChosen[0].demVote));
+            })
+            .style('stroke', '')
+            .style('stroke-width', 0.25)
+            .style('opacity', 0.75);
+
+          slider.addEventListener('input', () => {
+            const electionYear = +slider.value;
+            sliderValue.innerHTML = `Year: ${electionYear}`;
+
+            if (counter === 0) {
+              mapGraph.selectAll('path')
+                .data(jsonData.features)
+                .transition()
+                .duration(300)
+                .style('fill', (d) => {
+                  const { value } = d.properties;
+                  const yearChosen = value.filter((result) => result.year === electionYear);
+                  if (yearChosen[0].demVote < yearChosen[0].repVote) {
+                    return repColor((yearChosen[0].repVote - yearChosen[0].demVote)
+                      / (yearChosen[0].repVote + yearChosen[0].demVote));
+                  }
+                  return demColor((yearChosen[0].demVote - yearChosen[0].repVote)
+                      / (yearChosen[0].repVote + yearChosen[0].demVote));
+                });
+            } else if (counter === 1) {
+              mapGraph.selectAll('.vote-circles')
+                .data(jsonData.features)
+                .transition()
+                .duration(300)
+                .style('fill', (d) => {
+                  const { value } = d.properties;
+                  const yearChosen = value.filter((result) => result.year === electionYear);
+                  if (yearChosen[0].demVote < yearChosen[0].repVote) {
+                    return repColor((yearChosen[0].repVote - yearChosen[0].demVote)
+                      / (yearChosen[0].repVote + yearChosen[0].demVote));
+                  }
+                  return demColor((yearChosen[0].demVote - yearChosen[0].repVote)
+                      / (yearChosen[0].repVote + yearChosen[0].demVote));
+                })
+                .attr('r', (d) => {
+                  const { value } = d.properties;
+                  const yearChosen = value.filter((result) => result.year === +slider.value);
+                  if (yearChosen[0].demVote < yearChosen[0].repVote) {
+                    return circleScale(yearChosen[0].repVote);
+                  }
+                  return circleScale(yearChosen[0].demVote);
+                });
+            }
+
+            mapGraph.selectAll('.states')
+              .data(jsonData.features)
+              .text((d) => {
+                const { value } = d.properties;
+                const yearChosen = value.filter((result) => result.year === +slider.value);
+                if (yearChosen[0].demVote > yearChosen[0].repVote) {
+                  return `State: ${yearChosen[0].state}\nWinner: ${yearChosen[0].demRep}\nVotes: ${yearChosen[0].demVote}\nLead: ${(((yearChosen[0].demVote - yearChosen[0].repVote)
+                    / (yearChosen[0].repVote + yearChosen[0].demVote)) * 100).toFixed(2)}%`;
+                }
+                return `State: ${yearChosen[0].state}\nWinner: ${yearChosen[0].repRep}\nVotes: ${yearChosen[0].repVote}\nLead: ${(((yearChosen[0].repVote - yearChosen[0].demVote)
+                  / (yearChosen[0].repVote + yearChosen[0].demVote)) * 100).toFixed(2)}%`;
+              });
+
+            mapGraph.selectAll('.vote-circles')
+              .data(jsonData.features)
+              .transition()
+              .duration(300)
+              .style('fill', (d) => {
+                const { value } = d.properties;
+                const yearChosen = value.filter((result) => result.year === +slider.value);
+                if (yearChosen[0].demVote < yearChosen[0].repVote) {
+                  return repColor((yearChosen[0].repVote - yearChosen[0].demVote)
+                    / (yearChosen[0].repVote + yearChosen[0].demVote));
+                }
+                return demColor((yearChosen[0].demVote - yearChosen[0].repVote)
+                    / (yearChosen[0].repVote + yearChosen[0].demVote));
+              });
+
+            mapGraph.selectAll('.mapTitle')
+              .text(`${electionYear} Presidential Election Map`);
+          });
+
+          mapGraph
+            .on('click', () => {
+              counter = (counter + 1) % 2;
+
+              if (counter === 0) {
+                mapGraph.selectAll('path')
+                  .data(jsonData.features)
+                  .transition()
+                  .duration(300)
+                  .style('fill', (d) => {
+                    const { value } = d.properties;
+                    const yearChosen = value.filter((result) => result.year === +slider.value);
+                    if (yearChosen[0].demVote < yearChosen[0].repVote) {
+                      return repColor((yearChosen[0].repVote - yearChosen[0].demVote)
+                        / (yearChosen[0].repVote + yearChosen[0].demVote));
+                    }
+                    return demColor((yearChosen[0].demVote - yearChosen[0].repVote)
+                        / (yearChosen[0].repVote + yearChosen[0].demVote));
+                  });
+
+                mapGraph.selectAll('.vote-circles')
+                  .data(jsonData.features)
+                  .transition()
+                  .duration(300)
+                  .attr('r', 0);
+              } else {
+                mapGraph.selectAll('path')
+                  .data(jsonData.features)
+                  .transition()
+                  .duration(300)
+                  .style('fill', '#bbb');
+
+                mapGraph.selectAll('.vote-circles')
+                  .data(jsonData.features)
+                  .transition()
+                  .duration(300)
+                  .attr('r', (d) => {
+                    const { value } = d.properties;
+                    const yearChosen = value.filter((result) => result.year === +slider.value);
+                    if (yearChosen[0].demVote < yearChosen[0].repVote) {
+                      return circleScale(yearChosen[0].repVote);
+                    }
+                    return circleScale(yearChosen[0].demVote);
+                  });
+              }
+            });
         });
     });
 
