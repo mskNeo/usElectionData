@@ -25,7 +25,7 @@ const makeMap = (data) => {
 
   const circleScale = d3.scaleLinear()
     .domain([d3.min(data.map((d) => d.candidatevotes)), d3.max(data.map((d) => d.candidatevotes))])
-    .range([5, 50]);
+    .range([2, 50]);
 
   const projection = d3.geoAlbersUsa()
     .translate([width / 2, height / 2]);
