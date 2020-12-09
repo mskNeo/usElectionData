@@ -36,7 +36,8 @@ const makeMap = (data) => {
   const mapGraph = d3.select('#map')
     .append('svg')
     .attr('width', width)
-    .attr('height', height);
+    .attr('height', height)
+    .style('cursor', 'pointer');
 
   d3.json('data/us-states.json')
     .then((json) => {
@@ -284,6 +285,12 @@ const makeMap = (data) => {
     .attr('class', 'mapTitle')
     .attr('text-anchor', 'middle')
     .text('2016 Presidential Election Map');
+  titleGroup.append('text')
+    .style('font-size', '12px')
+    .style('font-family', 'sans-serif')
+    .attr('text-anchor', 'middle')
+    .attr('y', 20)
+    .text('* Click on graph for alternate view');
 
   // legend
   const legend = mapGraph.append('g')
